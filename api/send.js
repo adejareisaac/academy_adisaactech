@@ -25,9 +25,9 @@ export default async function handler(req, res) {
     }
 
     const data = await resend.emails.send({
-      from: "Adzafact Academy <onboarding@academy.adzafact.com.ng>",
+      from: "Adisaac Tech Innovations Ltd Academy <onboarding@academy.adisaactech.com.ng>",
       to: [email],
-      subject: "Welcome to Adzafact Academy",
+      subject: "Welcome to Adisaac Academy",
       html: `
         <h1>Welcome ${full_name}</h1>
 
