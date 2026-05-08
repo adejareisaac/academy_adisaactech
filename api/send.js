@@ -27,19 +27,19 @@ export default async function handler(req, res) {
         { full_name, email, phone, experience, focus }
       ]);
 
-if (dbError) {
+    if (dbError) {
 
-  if (dbError.code === "23505") {
-    return res.status(400).json({
-      error: "This email is already on the waitlist."
-    });
-  }
+      if (dbError.code === "23505") {
+        return res.status(400).json({
+          error: "This email is already on the waitlist."
+        });
+      }
 
-  return res.status(500).json({
-    error: "Database insert failed",
-    details: dbError.message
-  });
-}
+      return res.status(500).json({
+        error: "Database insert failed",
+        details: dbError.message
+      });
+    }
 
     // 2. SEND EMAIL
     await resend.emails.send({
@@ -47,55 +47,59 @@ if (dbError) {
       to: [email],
       subject: "🚀 Welcome to the Founding Cohort — You're In Early",
       html: `
-        <div style="font-family: Arial, sans-serif; line-height:1.6; color:#111">
+    <div style="font-family: Arial, sans-serif; line-height:1.6; color:#111; max-width:600px; margin:auto;">
 
-          <h1>Welcome to Adisaac Tech Academy, ${full_name}</h1>
+      <!-- LOGO -->
+      <div style="text-align:center; margin-bottom:24px;">
+        <img
+          src="https://academy.adisaactech.com.ng/logo.png"
+          alt="Adisaac Tech Academy"
+          style="width:110px; height:auto; border-radius:12px;"
+        />
+      </div>
 
-          <p>
-            You’ve officially secured a place on the <b>Founding Cohort Waitlist</b>.
-            This is not just a signup — it’s an entry point into a highly selective
-            engineering training ecosystem being built for the next generation of builders.
-          </p>
+      <h1>Welcome to Adisaac Tech Academy, ${full_name}</h1>
 
-          <hr/>
+      <p>
+        You’ve officially secured a place on the <b>Founding Cohort Waitlist</b>.
+        This is not just a signup — it’s an entry point into a highly selective
+        engineering training ecosystem being built for the next generation of builders.
+      </p>
 
-          <h2>What happens next</h2>
+      <hr/>
 
-          <ul>
-            <li>You will get early access before public launch</li>
-            <li>You will receive private curriculum previews</li>
-            <li>You may be invited for priority onboarding interviews</li>
-          </ul>
+      <h2>What happens next</h2>
+      <ul>
+        <li>You will get early access before public launch</li>
+        <li>You will receive private curriculum previews</li>
+        <li>You may be invited for priority onboarding interviews</li>
+      </ul>
 
-          <h2>Your Profile Snapshot</h2>
+      <h2>Your Profile Snapshot</h2>
+      <p><b>Experience Level:</b> ${experience}</p>
+      <p><b>Focus Area:</b> ${focus}</p>
+      <p><b>WhatsApp:</b> ${phone}</p>
 
-          <p><b>Experience Level:</b> ${experience}</p>
-          <p><b>Focus Area:</b> ${focus}</p>
-          <p><b>WhatsApp:</b> ${phone}</p>
+      <hr/>
 
-          <hr/>
+      <h2>Why this matters</h2>
+      <p>
+        The global tech industry is shifting toward AI-native engineering.
+        Most developers will be replaced or stagnate — but a small group
+        will learn how to build systems that integrate AI, scale globally,
+        and solve real production problems.
+      </p>
 
-          <h2>Why this matters</h2>
+      <p>You are now on the radar of that group.</p>
 
-          <p>
-            The global tech industry is shifting toward AI-native engineering.
-            Most developers will be replaced or stagnate — but a small group
-            will learn how to build systems that integrate AI, scale globally,
-            and solve real production problems.
-          </p>
+      <br/>
 
-          <p>
-            You are now on the radar of that group.
-          </p>
+      <p style="font-size:12px; color:#666; text-align:center;">
+        Adisaac Tech Innovations Ltd — Crafting Tomorrow, Today.
+      </p>
 
-          <br/>
-
-          <p style="font-size:12px; color:#666">
-            Adisaac Tech Innovations Ltd — Crafting Tomorrow, Today.
-          </p>
-
-        </div>
-      `,
+    </div>
+  `
     });
 
     return res.status(200).json({
