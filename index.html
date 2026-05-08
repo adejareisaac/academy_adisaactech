@@ -679,28 +679,61 @@
 // Waitlist form submission handler
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
+
     if (!form) return;
+
     form.addEventListener('submit', async function (e) {
         e.preventDefault();
+
+        const button = form.querySelector('button');
+
+        button.disabled = true;
+        button.innerText = "Submitting...";
+
         const full_name = form.elements['full_name'].value;
         const email = form.elements['email'].value;
         const phone = form.elements['phone'].value;
         const experience = form.elements['experience'].value;
         const focus = form.elements['focus'].value;
-        // Add your other fields if needed
-        await fetch("/api/send", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                full_name,
-                email,
-                phone,
-                experience,
-                focus,
-            }),
-        });
+
+        try {
+
+            const response = await fetch("/api/send", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    full_name,
+                    email,
+                    phone,
+                    experience,
+                    focus,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+
+                alert("🎉 You successfully joined the waitlist.");
+
+                form.reset();
+
+            } else {
+
+                alert(data.error || "Something went wrong.");
+
+            }
+
+        } catch (error) {
+
+            alert("Network error. Please try again.");
+
+        }
+
+        button.disabled = false;
+        button.innerText = "Secure My Spot";
     });
 });
 </script>
