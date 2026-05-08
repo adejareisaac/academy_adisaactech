@@ -801,7 +801,7 @@
             </div>
 
             <h3 class="text-3xl font-h font-bold mb-4">
-                You're In 🚀
+                You're In!!!
             </h3>
 
             <p class="text-text-muted leading-relaxed mb-8">
@@ -816,12 +816,27 @@
 
         </div>
     </div>
+
     <script>
-        closeModal.addEventListener("click", () => {
-            successModal.classList.remove("flex");
-            successModal.classList.add("hidden");
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const successModal = document.getElementById("successModal");
+            const closeModal = document.getElementById("closeModal");
+
+            closeModal.addEventListener("click", () => {
+                successModal.classList.remove("flex");
+                successModal.classList.add("hidden");
+
+                // OPTIONAL: reload page (uncomment if you want)
+                // window.location.reload();
+
+                // OR redirect instead (uncomment if you want)
+                // window.location.href = "/";
+            });
+
         });
     </script>
+</body>
 </body>
 
 </html>
